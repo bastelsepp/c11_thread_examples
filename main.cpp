@@ -28,10 +28,19 @@ static unsigned long counter;
 
 void show_current_time()
 {
-	struct timespec time;
-	clock_gettime(CLOCK_MONOTONIC,&time);
-	cout<<"timestamp sec:"<<time.tv_sec<<" nsec:";
-	cout<<setw(9)<<setfill('0')<<time.tv_nsec<<endl;
+	using namespace std::chrono;
+
+	auto t0 = chrono::high_resolution_clock::now();
+
+
+	auto tx = t0.time_since_epoch();
+
+	cout<<"time: "<<setfill('0')<<setw(3)<< duration_cast<minutes>(tx).count()<<" ";
+	cout<<setfill('0')<<setw(3)<< duration_cast<seconds>(tx).count()%60<<" ";
+	cout<<setfill('0')<<setw(3)<< duration_cast<milliseconds>(tx).count()%1000<<" ";
+	cout<<setfill('0')<<setw(3)<< duration_cast<microseconds>(tx).count()%1000<<" ";
+
+
 }
 
 /* generate numbers and send them to a second thread */
